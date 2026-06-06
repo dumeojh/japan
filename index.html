@@ -387,7 +387,7 @@ const dramaData = [
 ["幸(しあわ)せだ。","행복해.","幸せだ。"],
 ["好(す)きだよ。","좋아해.","好きだよ。"],
 ["大好(だいす)き。","정말 좋아해.","大好き。"],
-["愛(あい)してる。","사랑해.","愛してる。"],
+["愛(あい)している。","사랑해.","愛している。"],
 ["信(しん)じて。","믿어줘.","信じて。"],
 
 ["信(しん)じてる。","믿고 있어.","信じてる。"],
@@ -416,7 +416,7 @@ const dramaData = [
 ["一緒(いっしょ)に帰(かえ)ろう。","같이 가자.","一緒に帰ろう。"],
 ["そばにいて。","곁에 있어 줘.","そばにいて。"],
 ["離(はな)れないで。","떠나지 마.","離れないで。"],
-["手(て)を貸(か)して。","도와줘.","手を貸して。"],
+["手(て)を貸(か)して。","손 좀 빌려줘.","手を貸して。"],
 ["手伝(てつだ)って。","도와줘.","手伝って。"],
 ["私(わたし)について来(き)て。","나를 따라와.","私について来て。"],
 ["大変(たいへん)だ。","큰일이야.","大変だ。"],
@@ -465,14 +465,14 @@ let loop = false;
 
 function render(){
 
-    document.getElementById("sentence").textContent =
-        currentData[idx][0];
+document.getElementById("sentence")
+.addEventListener("click", speakNow);
 
-    document.getElementById("meaning").textContent =
-        showMeaning ? currentData[idx][1] : "";
+ document.getElementById("meaning").textContent =
+     showMeaning ? currentData[idx][1] : "";
 
-    document.getElementById("count").textContent =
-        (idx+1) + " / " + currentData.length;
+ document.getElementById("count").textContent =
+     (idx+1) + " / " + currentData.length;
 }
 
 function speakNow(){
