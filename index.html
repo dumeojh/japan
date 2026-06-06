@@ -10,6 +10,11 @@ body{font-family:sans-serif;max-width:800px;margin:auto;padding:20px;text-align:
 button{padding:12px 18px;margin:5px;font-size:16px}
 #sentence{font-size:2rem;margin:30px 0;padding:20px;border:1px solid #ccc;border-radius:12px}
 </style>
+ #meaning{
+  font-size:1.3rem;
+  color:#666;
+  margin-top:10px;
+}
 </head>
 <body>
 <h2>일본어 학습기</h2>
@@ -17,10 +22,14 @@ button{padding:12px 18px;margin:5px;font-size:16px}
 <button onclick="changeMode('basic')">📘 기초 일본어 100문장</button>
 <button onclick="changeMode('classroom')">🏫 교실 회화 100문장</button>
 <button onclick="changeMode('drama')">🎬 드라마 대사 100문장</button>
+ <button onclick="toggleMeaning()">
+뜻 보기/숨기기
+</button>
 
 <div id="mode"></div>
 <div id="count"></div>
 <div id="sentence"></div>
+ <div id="meaning"></div>
 
 <button onclick="prev()">◀ 이전</button>
 <button onclick="speakNow()">🔊 재생</button>
@@ -80,6 +89,25 @@ function changeMode(m){
  speakNow();
 }
 
+let showMeaning = true;
+
+function toggleMeaning(){
+    showMeaning = !showMeaning;
+    render();
+}
+
+function render(){
+
+ document.getElementById("sentence").textContent =
+     currentData[idx][0];
+
+ document.getElementById("meaning").textContent =
+     showMeaning ? currentData[idx][1] : "";
+
+}
+
+
+ 
 changeMode('basic');
 </script>
 </body>
