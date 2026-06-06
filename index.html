@@ -159,9 +159,11 @@ function speakNow(){
 
     speechSynthesis.cancel();
 
-    let u = new SpeechSynthesisUtterance(
-        currentData[idx][0]
-    );
+    // (히라가나) 제거
+    let textToSpeak =
+        currentData[idx][0].replace(/\([^)]+\)/g, "");
+
+    let u = new SpeechSynthesisUtterance(textToSpeak);
 
     u.lang = "ja-JP";
     u.rate = 0.9;
@@ -187,6 +189,7 @@ function speakNow(){
     speechSynthesis.speak(u);
 }
 
+    
 function next(){
 
     idx++;
