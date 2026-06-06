@@ -465,14 +465,17 @@ let loop = false;
 
 function render(){
 
-document.getElementById("sentence")
-.addEventListener("click", speakNow);
+    // 일본어 문장
+    document.getElementById("sentence").textContent =
+        currentData[idx][0];
 
- document.getElementById("meaning").textContent =
-     showMeaning ? currentData[idx][1] : "";
+    // 한글 뜻
+    document.getElementById("meaning").textContent =
+        showMeaning ? currentData[idx][1] : "";
 
- document.getElementById("count").textContent =
-     (idx+1) + " / " + currentData.length;
+    // 진행상황
+    document.getElementById("count").textContent =
+        (idx + 1) + " / " + currentData.length;
 }
 
 function speakNow(){
