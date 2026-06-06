@@ -521,36 +521,39 @@ function changeMode(mode){
 
     idx = 0;
 
-    if(mode==="basic"){
+    if(mode === "basic"){
 
         currentData = basicData;
 
         document.getElementById("mode").textContent =
-        "📘 기초 일본어";
+            `📘 기초 일본어 (${basicData.length}문장)`;
 
     }
 
-    if(mode==="classroom"){
+    else if(mode === "classroom"){
 
         currentData = classroomData;
 
         document.getElementById("mode").textContent =
-        "🏫 교실 회화";
+            `🏫 교실 회화 (${classroomData.length}문장)`;
 
     }
 
-    if(mode==="drama"){
+    else if(mode === "drama"){
 
         currentData = dramaData;
 
         document.getElementById("mode").textContent =
-        "🎬 드라마 대사";
+            `🎬 드라마 대사 (${dramaData.length}문장)`;
 
     }
 
     render();
     speakNow();
 }
+
+
+    
 
 function toggleMeaning(){
 
