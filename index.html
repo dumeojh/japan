@@ -1,114 +1,291 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>일본어 학습기</title>
-<style>
-body{font-family:sans-serif;max-width:800px;margin:auto;padding:20px;text-align:center}
-button{padding:12px 18px;margin:5px;font-size:16px}
-#sentence{font-size:2rem;margin:30px 0;padding:20px;border:1px solid #ccc;border-radius:12px}
-</style>
- #meaning{
-  font-size:1.3rem;
-  color:#666;
-  margin-top:10px;
-}
-</head>
-<body>
-<h2>일본어 학습기</h2>
 
-<button onclick="changeMode('basic')">📘 기초 일본어 100문장</button>
-<button onclick="changeMode('classroom')">🏫 교실 회화 100문장</button>
-<button onclick="changeMode('drama')">🎬 드라마 대사 100문장</button>
- <button onclick="toggleMeaning()">
-뜻 보기/숨기기
+<style>
+body{
+    font-family:sans-serif;
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+    text-align:center;
+}
+
+h2{
+    margin-bottom:20px;
+}
+
+button{
+    padding:12px 18px;
+    margin:5px;
+    font-size:16px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+#sentence{
+    font-size:2rem;
+    margin-top:30px;
+    padding:20px;
+    border:1px solid #ccc;
+    border-radius:15px;
+    min-height:80px;
+}
+
+#meaning{
+    font-size:1.3rem;
+    color:#666;
+    margin-top:15px;
+    min-height:30px;
+}
+
+#count{
+    margin-top:10px;
+    font-weight:bold;
+}
+
+#mode{
+    margin-top:10px;
+    font-size:1.2rem;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<h2>🇯🇵 일본어 학습기</h2>
+
+<button onclick="changeMode('basic')">
+📘 기초 일본어
+</button>
+
+<button onclick="changeMode('classroom')">
+🏫 교실 회화
+</button>
+
+<button onclick="changeMode('drama')">
+🎬 드라마 대사
+</button>
+
+<br><br>
+
+<button onclick="toggleMeaning()">
+📖 뜻 보기/숨기기
 </button>
 
 <div id="mode"></div>
 <div id="count"></div>
+
 <div id="sentence"></div>
- <div id="meaning"></div>
+<div id="meaning"></div>
+
+<br>
 
 <button onclick="prev()">◀ 이전</button>
-<button onclick="speakNow()">🔊 재생</button>
-<button onclick="next()">다음 ▶</button>
-<button onclick="toggleLoop()">⏯ 반복재생 ON/OFF</button>
+
+<button onclick="speakNow()">
+🔊 재생
+</button>
+
+<button onclick="next()">
+▶ 다음
+</button>
+
+<button id="loopBtn" onclick="toggleLoop()">
+🔁 반복 OFF
+</button>
+
+<button onclick="stopLoop()">
+⏹ 정지
+</button>
 
 <script>
-const basicData=[["おはようございます。"],["こんにちは。"],["ありがとうございます。"]];
-const classroomData=[["先生、おはようございます。"],["宿題を出してください。"],["質問があります。"]];
-const dramaData=[["本当？"],["どうしたの？"],["大丈夫？"]];
 
-let currentData=basicData;
-let idx=0;
-let loop=false;
+const basicData = [
+["おはようございます。","좋은 아침입니다."],
+["こんにちは。","안녕하세요."],
+["こんばんは。","안녕하세요(저녁)."],
+["ありがとうございます。","감사합니다."],
+["すみません。","죄송합니다."],
+["私(わたし)は学生(がくせい)です。","저는 학생입니다."],
+["名前(なまえ)は何(なん)ですか。","이름이 무엇입니까?"],
+["日本語(にほんご)を勉強(べんきょう)しています。","일본어를 공부하고 있습니다."]
+];
+
+const classroomData = [
+["先生(せんせい)、おはようございます。","선생님 안녕하세요."],
+["宿題(しゅくだい)を出(だ)してください。","숙제를 제출하세요."],
+["質問(しつもん)があります。","질문이 있습니다."],
+["教科書(きょうかしょ)を開(ひら)いてください。","교과서를 펴세요."],
+["分(わ)かりました。","알겠습니다."],
+["発表(はっぴょう)します。","발표하겠습니다."]
+];
+
+const dramaData = [
+["本当(ほんとう)？","정말?"],
+["どうしたの？","무슨 일이야?"],
+["大丈夫(だいじょうぶ)？","괜찮아?"],
+["分(わ)からない。","모르겠어."],
+["信(しん)じられない。","믿을 수 없어."],
+["会(あ)いたかった。","보고 싶었어."],
+["好(す)きだよ。","좋아해."],
+["愛(あい)してる。","사랑해."]
+];
+
+let currentData = basicData;
+let idx = 0;
+
+let showMeaning = true;
+let loop = false;
 
 function render(){
- document.getElementById("sentence").textContent=currentData[idx][0];
- document.getElementById("count").textContent=(idx+1)+" / "+currentData.length;
+
+    document.getElementById("sentence").textContent =
+        currentData[idx][0];
+
+    document.getElementById("meaning").textContent =
+        showMeaning ? currentData[idx][1] : "";
+
+    document.getElementById("count").textContent =
+        (idx+1) + " / " + currentData.length;
 }
 
 function speakNow(){
- speechSynthesis.cancel();
- let u=new SpeechSynthesisUtterance(currentData[idx][0]);
- u.lang="ja-JP";
- if(loop){
-   u.onend=function(){
-      if(loop){ setTimeout(speakNow,800); }
-   }
- }
- speechSynthesis.speak(u);
+
+    speechSynthesis.cancel();
+
+    let u = new SpeechSynthesisUtterance(
+        currentData[idx][0]
+    );
+
+    u.lang = "ja-JP";
+    u.rate = 0.9;
+
+    if(loop){
+
+        u.onend = function(){
+
+            if(loop){
+
+                setTimeout(function(){
+
+                    speakNow();
+
+                },1000);
+
+            }
+
+        };
+
+    }
+
+    speechSynthesis.speak(u);
 }
 
 function next(){
- idx=(idx+1)%currentData.length;
- render();
- speakNow();
+
+    idx++;
+
+    if(idx >= currentData.length){
+
+        idx = 0;
+
+    }
+
+    render();
+    speakNow();
 }
 
 function prev(){
- idx=(idx-1+currentData.length)%currentData.length;
- render();
- speakNow();
+
+    idx--;
+
+    if(idx < 0){
+
+        idx = currentData.length - 1;
+
+    }
+
+    render();
+    speakNow();
 }
 
-function toggleLoop(){
- loop=!loop;
- speechSynthesis.cancel();
- if(loop){ speakNow(); }
-}
+function changeMode(mode){
 
-function changeMode(m){
- idx=0;
- if(m==="basic"){currentData=basicData; document.getElementById("mode").textContent="📘 기초 일본어";}
- if(m==="classroom"){currentData=classroomData; document.getElementById("mode").textContent="🏫 교실 회화";}
- if(m==="drama"){currentData=dramaData; document.getElementById("mode").textContent="🎬 드라마 대사";}
- render();
- speakNow();
-}
+    idx = 0;
 
-let showMeaning = true;
+    if(mode==="basic"){
+
+        currentData = basicData;
+
+        document.getElementById("mode").textContent =
+        "📘 기초 일본어";
+
+    }
+
+    if(mode==="classroom"){
+
+        currentData = classroomData;
+
+        document.getElementById("mode").textContent =
+        "🏫 교실 회화";
+
+    }
+
+    if(mode==="drama"){
+
+        currentData = dramaData;
+
+        document.getElementById("mode").textContent =
+        "🎬 드라마 대사";
+
+    }
+
+    render();
+    speakNow();
+}
 
 function toggleMeaning(){
+
     showMeaning = !showMeaning;
+
     render();
 }
 
-function render(){
+function toggleLoop(){
 
- document.getElementById("sentence").textContent =
-     currentData[idx][0];
+    loop = !loop;
 
- document.getElementById("meaning").textContent =
-     showMeaning ? currentData[idx][1] : "";
+    document.getElementById("loopBtn").textContent =
+        loop ? "🔁 반복 ON" : "🔁 반복 OFF";
 
+    speechSynthesis.cancel();
+
+    if(loop){
+
+        speakNow();
+
+    }
 }
 
+function stopLoop(){
 
- 
-changeMode('basic');
+    loop = false;
+
+    document.getElementById("loopBtn").textContent =
+        "🔁 반복 OFF";
+
+    speechSynthesis.cancel();
+}
+
+changeMode("basic");
+
 </script>
+
 </body>
 </html>
